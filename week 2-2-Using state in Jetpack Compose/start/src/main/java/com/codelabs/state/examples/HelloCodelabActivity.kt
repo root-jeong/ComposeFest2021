@@ -35,6 +35,21 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.codelabs.state.databinding.ActivityHelloCodelabBinding
 
+class HelloCodelabViewModel: ViewModel() {
+
+    // LiveData holds state which is observed by the UI
+    // (state flows down from ViewModel)
+    private val _name = MutableLiveData("")
+    val name: LiveData<String> = _name
+
+    // onNameChanged is an event we're defining that the UI can invoke
+    // (events flow up from UI)
+    fun onNameChanged(newName: String) {
+        _name.value = newName
+    }
+}
+
+
 /**
  * An example showing unstructured state stored in an Activity.
  */
@@ -84,7 +99,7 @@ class HelloViewModel : ViewModel() {
  * An example showing unidirectional data flow in the View system using a ViewModel.
  */
 class HelloCodeLabActivityWithViewModel : AppCompatActivity() {
-    private val helloViewModel by viewModels<HelloViewModel>()
+    private val helloViewModel by viewModels<HelloCodelabViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -96,7 +111,7 @@ class HelloCodeLabActivityWithViewModel : AppCompatActivity() {
             // onNameChanged is an event on the ViewModel
             helloViewModel.onNameChanged(it.toString())
         }
-        // [helloViewModel.name] is state that we observe to update the UI
+        // [helloViewModel.name] is state that we observe to update t₩₩he UI
         helloViewModel.name.observe(this) { name ->
             binding.helloText.text = "Hello, $name"
         }
